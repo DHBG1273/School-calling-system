@@ -1,4 +1,5 @@
 Sistema de chamada para as escolas
+
 Meu primeiro projeto front-end, desenvolvido para colocar em prática os fundamentos de HTML, CSS e JavaScript. Apesar de possuir limitações de design e organização de código, o projeto funciona e representa uma etapa importante da minha evolução como desenvolvedor.
 
 # Sistema de Chamada Escolar
