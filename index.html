@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algoritmo de Chamada-(SCE)</title>
+    <link rel="stylesheet" href="styles.css" defer />
+    <!-- Biblioteca HTML2PDF para gerar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <!-- Sempre Manter as bibliotecas acima do arquivo JS-->
+    <script src="script.js" defer></script>
+
+    <link rel="prereload" href="https://fonts.googleapis.com" />
+    <link rel="prereload" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <noscript
+    >Você precisa habilitar o JavaScript para este site funcionar!
+  </noscript>
+  <body>
+    <header>
+      <h1 style="color: var(--text)">Sistema de Chamada para Escolas (SCE)</h1>
+      <label for="select_Turmas" name="Escolha uma turma:"
+        ><h2>Escolha uma turma:</h2>
+      </label>
+      <select name="Turmas" id="select_Turmas">
+        <option value="2C">TURMA 2C</option>
+        <option value="1C">TURMA 1C</option>
+        <option value="1B">TURMA 1B</option>
+        <option value="Nenhuma" selected>* Nenhuma *</option>
+      </select>
+      <h2 id="DefSubtitle">Selecione uma turma para iniciar a chamada</h2>
+      <button type="button" id="All_Presente" class="All_btn Beffects Hidden">
+        C
+      </button>
+      <button type="button" id="All_Ausente" class="All_btn Beffects Hidden">
+        F
+      </button>
+      <button type="button" id="All_Desist" class="All_btn Beffects Hidden">
+        D</button
+      ><br />
+      <!-- Menu de Configurações-->
+      <img
+        src="configimg.webp"
+        alt=""
+        id="Configurações_img"
+        data-fallback="https://i.ibb.co/cKCkc4k1/Config-Img.png"
+        aria-label="Configurações"
+        title="Configurações"
+        tabindex="0"
+      />
+      <dialog id="Menu_Config">
+        <h2
+          style="
+            text-align: center;
+            color: whitesmoke;
+            font-weight: bold;
+            font-size: 1.9rem;
+          "
+        >
+          CONFIGURAÇÕES DO SITE
+        </h2>
+        <section id="Seção_tema" class="sessõesConfMenu">
+          <p class="TemaText">ALTERAR TEMA</p>
+          <br />
+          <button type="button" class="Beffects" id="tema_Claro">CLARO</button>
+          <button type="button" class="Beffects" id="tema_Escuro">
+            ESCURO
+          </button>
+          <button type="button" class="Beffects" id="tema_DarkPurple">
+            PURPLE
+          </button>
+          <button type="button" class="Beffects" id="tema_Azul">BLUE</button>
+          <button type="button" class="Beffects" id="tema_red">RED</button>
+          <button type="button" class="Beffects" id="tema_green">GREEN</button>
+          <button type="button" class="Beffects" id="tema_pink">PINK</button>
+          <p style="margin: 0">TEMA ATUAL: <b id="TemaAtual">DO SISTEMA</b></p>
+        </section>
+        <section id="Seção_posicionamento" class="sessõesConfMenu">
+          <p class="TemaText">ALTERAR ESTILO DOS BLOCOS</p>
+          <br />
+          <button
+            type="button"
+            id="row_style_btn"
+            class="Beffects EstiloBotoes"
+          >
+            BLOCOS (LINEARES)
+          </button>
+
+          <button
+            type="button"
+            id="ret_style_btn"
+            class="Beffects EstiloBotoes"
+          >
+            BLOCOS (RETÂNGULARES)
+          </button>
+          <p style="text-align: center">
+            POSICIONAMENTO ATUAL: <b id="PosView">RETÂNGULARES</b>
+          </p>
+          <p class="Avisos">
+            Alinhamento retângular extremamente recomendado para celulares!
+          </p>
+        </section>
+        <section id="Seção-QtnCols" class="sessõesConfMenu">
+          <p class="TemaText">DEFENIR QTND DE COLUNAS</p>
+          <button type="button" id="1col" class="Beffects EstiloBotoes">
+            1
+          </button>
+          <button type="button" id="2col" class="Beffects EstiloBotoes">
+            2
+          </button>
+          <button type="button" id="3col" class="Beffects EstiloBotoes">
+            3
+          </button>
+          <button type="button" id="4col" class="Beffects EstiloBotoes">
+            4
+          </button>
+          <button type="button" id="5col" class="Beffects EstiloBotoes">
+            5
+          </button>
+          <button type="button" id="6col" class="Beffects EstiloBotoes">
+            6
+          </button>
+          <br />
+          <button type="button" id="MaxCols" class="Beffects EstiloBotoes">
+            MÁXIMO
+          </button>
+          <p style="text-align: center">
+            NÚMERO DE COLUNAS: <b id="Messagecols">PADRÃO</b>
+          </p>
+          <p class="Avisos">
+            Quanto maior sua tela ou zoom, maior o número de colunas vísiveis
+          </p>
+        </section>
+        <section id="Seção-Tamanholinhas" class="sessõesConfMenu Hidden">
+          <p class="TemaText">DEFENIR TAMANHO DAS LINHAS</p>
+          <button type="button" id="tam30%" class="Beffects EstiloBotoes">
+            30%
+          </button>
+          <button type="button" id="tam40%" class="Beffects EstiloBotoes">
+            40%
+          </button>
+          <button type="button" id="tam50%" class="Beffects EstiloBotoes">
+            50%
+          </button>
+          <button type="button" id="tam60%" class="Beffects EstiloBotoes">
+            60%
+          </button>
+          <button type="button" id="tam70%" class="Beffects EstiloBotoes">
+            70%
+          </button>
+          <button type="button" id="tam80%" class="Beffects EstiloBotoes">
+            80%
+          </button>
+          <button type="button" id="tam90%" class="Beffects EstiloBotoes">
+            90%
+          </button>
+          <button type="button" id="tam100%" class="Beffects EstiloBotoes">
+            100%
+          </button>
+
+          <p style="text-align: center">
+            TAMANHO ATUAL: <b id="Messagelinha">PADRÃO</b>
+          </p>
+          <p class="Avisos">
+            Este recurso pode acabar causando bugs de layout dependendo do
+            tamanho e em dispositivos com telas pequenas, como celulares, use
+            com cautela!
+          </p>
+        </section>
+        <section class="sessõesConfMenu">
+          <h2>APAGAR DADOS SALVOS DO SITE</h2>
+          <button type="button" class="Beffects" id="LimparDadosBTN">
+            APAGAR DADOS
+          </button>
+          <p class="Avisos">
+            Isso fará com que todos os dados salvos como: Estado dos Alunos,
+            Observações e as configurações do site sejam deletadas
+          </p>
+          <p
+            id="Ocultar_avisos"
+            role="button"
+            type="button"
+            tabindex="0"
+            class="Beffects"
+          >
+            OCULTAR AVISOS
+          </p>
+        </section>
+        <button type="button" class="Beffects FecharConfgSalvarDig">
+          FECHAR
+        </button>
+      </dialog>
+    </header>
+    <main>
+      <form action="">
+        <!-- Aqui é onde irá aparecer os alunos-->
+        <div id="Turmas" data-estilo="Retangulos"></div>
+        <!-- Diálogos que aparecem caso um evento ocorra -->
+        <dialog class="Dialogs_Events" id="Dig_CampoVazio">
+          <h2>Campo vazio!</h2>
+          <p>
+            Não é possível insirir uma observação com o campo vazio! Insira
+            algum relato ou feche a caixa de dialogo.
+          </p>
+          <button class="Beffects OK_closeDig" type="button">OK</button>
+        </dialog>
+        <dialog class="Dialogs_Events" id="ObsCompleteDig_Nodata">
+          <h2 id="TextoCompleteOBS">Observação insirida!</h2>
+          <button class="Beffects OK_closeDig" type="button">OK</button>
+        </dialog>
+        <dialog class="Dialogs_Events" id="ApagarDadosDig">
+          <h2>
+            Tem certeza que deseja apagar <b>TODOS</b> os dados salvos? Esta
+            ação é irreversível!
+          </h2>
+          <button id="CANCELAR" type="button" class="Beffects">CANCELAR</button>
+          <button class="Beffects" id="APAGAR" type="button">APAGAR</button>
+        </dialog>
+        <dialog
+          class="Dialogs_Events"
+          id="StatusChamada_dig"
+          style="font-family: Arial"
+        >
+          <h2>Arquivo Baixado com Sucesso!</h2>
+          <p style="font-size: large"></p>
+          <button class="Beffects OK_closeDig" type="button">OK</button>
+        </dialog>
+        <!--Enviar Form + data-->
+        <div id="Final-Container" class="Hidden">
+          <label id="Data_Chamada_label">
+            Coloque o dia em que a Chamada está sendo feita antes de salvar:
+            <br />
+            <input type="date" id="Data_Chamada_input" />
+          </label>
+
+          <hr
+            style="
+              width: 90%;
+              height: 2%;
+              border: solid var(--color10) 1px;
+              max-width: 700px;
+            "
+          />
+          <button type="button" id="Salvar_Chamada" class="Final_btns">
+            SALVAR CHAMADA
+          </button>
+        </div>
+        <dialog id="SalvarChamadaDig">
+          <h2>Insira as informações para salvar a chamada</h2>
+          <label for="Nome">Nome completo do monitor: </label>
+          <input type="text" id="Nome" class="Final_input" />
+          <label for="CodigoMonitor">Insira o código do monitor: </label>
+          <div class="Final_inputs_div">
+            <input type="password" id="CodigoMonitor" class="Final_input" />
+            <span class="Carinhas" id="CodMHV" title="Mostrar/Ocultar">😚</span>
+          </div>
+          <label for="hash">Insira o código desta turma: </label>
+          <div class="Final_inputs_div">
+            <input type="password" id="hash" class="Final_input" />
+            <span class="Carinhas" id="hashHV" title="Mostrar/Ocultar">😚</span>
+          </div>
+          <p id="Select_Download_method">Selecione o método de Download:</p>
+          <button id="button-baixar-json" class="Final_btns" type="button">
+            BAIXAR JSON
+          </button>
+          <button id="button-baixar-pdf" class="Final_btns" type="button">
+            BAIXAR PDF
+          </button>
+          <br />
+          <button type="button" class="Beffects FecharConfgSalvarDig">
+            FECHAR
+          </button>
+          <br />
+          <br />
+          <i>Códigos: 2C: 1234, 1B: 1090, 1C: 5678.</i>
+          <br />
+
+          <i>Código do monitor é individual</i>
+        </dialog>
+      </form>
+    </main>
+
+    <!--Div conteudo PDF-->
+    <div id="conteudo-pdf" class="Hidden">
+      <h1>Relatório da chamada do dia: <span id="DiaChamadaPDF">#</span></h1>
+      <h2>TURMA <span id="TurmaPDF">*</span></h2>
+      <h3>Realizador da Chamada: <b id="Nome_Monitor"></b></h3>
+      <h3>Código do Monitor: <b id="Codigo_Monitor"></b></h3>
+      <p style="font-weight: bold">PRESENTES: <span id="TotalP_PDF">#</span></p>
+      <p style="font-weight: bold">AUSENTES: <span id="TotalF_PDF">#</span></p>
+      <p style="font-weight: bold">
+        DESISTENTES: <span id="TotalD_PDF">#</span>
+      </p>
+      <table
+        id="tabela-chamada"
+        style="width: 100%; border-collapse: collapse; margin-top: 20px"
+      >
+        <thead>
+          <tr style="background-color: #f0f0f0; margin: 0">
+            <th style="border: 2px solid #444; padding: 8px; width: 2%">#</th>
+            <th style="border: 2px solid #444; padding: 8px; width: 45%">
+              Aluno(a)
+            </th>
+            <th style="border: 2px solid #444; padding: 8px; width: 2%">
+              Status
+            </th>
+            <th style="border: 2px solid #444; padding: 8px; width: 50%">
+              Observação
+            </th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <footer>
+      <span id="direitos">© Por Diogo - V.Realese_13.10.2026</span>
+    </footer>
+  </body>
+</html>
